@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Ahmed & Esraa</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Variables ── */
+    :root {
+      --beige      : #F5F0E8;
+      --warm-white : #FDFBF7;
+      --gold       : #C9A96E;
+      --olive      : #5C5240;
+      --text       : #3A3028;
+      --text-light : #7A6E64;
+      --border     : #E0D8CC;
+      --green      : #4a7c59;
+      --green-bg   : #eaf2e6;
+      --red        : #9e4a4a;
+      --red-bg     : #f5e8e8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--beige);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 20px 60px;
+    }
+
+    /* ── Header ── */
+    .dash-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .dash-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--olive);
+    }
+    .dash-header p {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    /* ── Event selector ── */
+    .event-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+    .event-bar label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      white-space: nowrap;
+    }
+    .event-bar input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--warm-white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+    }
+    .event-bar input:focus { border-color: var(--gold); }
+    .event-bar button {
+      padding: 10px 20px;
+      background: var(--olive);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .event-bar button:hover { background: var(--gold); }
+
+    /* ── Stats grid ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+
+    .stat-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 14px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 44px;
+      font-weight: 400;
+      color: var(--olive);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .stat-card.attending  { border-color: #b8d4b0; }
+    .stat-card.attending  .stat-num { color: var(--green); }
+    .stat-card.declining  { border-color: #d4b0b0; }
+    .stat-card.declining  .stat-num { color: var(--red); }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 600px;
+      margin: 0 auto 16px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-left {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    /* Live indicator */
+    .live-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+    .live-dot::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    /* Export CSV button & EXCEL*/
+    .btn-export {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--warm-white);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--olive);
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      transition: background 0.2s;
+    }
+    .btn-export:hover { background: var(--beige); }
+
+    /* ── Responses list ── */
+    .responses-wrap {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .response-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 16px;
+      align-items: start;
+    }
+
+    .response-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .response-badge {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .badge-yes { background: var(--green-bg); color: var(--green); }
+    .badge-no  { background: var(--red-bg);   color: var(--red); }
+    .badge-na  { background: var(--beige);     color: var(--text-light); }
+
+    .response-message {
+      grid-column: 1 / -1;
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.6;
+      font-style: italic;
+    }
+    .response-message:empty { display: none; }
+
+    .response-sig {
+      grid-column: 1 / -1;
+    }
+    .response-sig img {
+      max-height: 50px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--beige);
+      padding: 4px 8px;
+    }
+
+    .response-time {
+      grid-column: 1 / -1;
+      font-size: 10px;
+      color: var(--text-light);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Load more button ── */
+    #load-more-btn {
+      display: none;
+      margin: 20px auto 0;
+      padding: 12px 28px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--olive);
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      transition: background 0.2s;
+    }
+    #load-more-btn:hover { background: var(--warm-white); }
+
+    /* ── Empty / loading states ── */
+    .state-msg {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-light);
+      font-size: 13px;
+    }
+
+    @media (max-width: 400px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dash-header">
+    <h1>Ahmed &amp; Esraa — RSVP Dashboard</h1>
+    <p>Real-time responses</p>
+  </div>
+
+  <!-- Event ID input — lets couple switch between events -->
+  <div class="event-bar">
+    <label>Event ID</label>
+    <input type="text" id="event-input" placeholder="default-event" value="default-event" />
+    <button onclick="loadEvent()">Load</button>
+  </div>
+
+  <!-- Stats row: Total / Attending / Not Attending -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-num" id="stat-total">—</div>
+      <div class="stat-label">Total Guests</div>
+    </div>
+    <div class="stat-card attending">
+      <div class="stat-num" id="stat-yes">—</div>
+      <div class="stat-label">Attending ✓</div>
+    </div>
+    <div class="stat-card declining">
+      <div class="stat-num" id="stat-no">—</div>
+      <div class="stat-label">Not Attending ✗</div>
+    </div>
+  </div>
+
+  <!-- Toolbar: live indicator + export button -->
+  <div class="toolbar">
+    <span class="live-dot">Live</span>
+    <div style="display:flex;gap:8px">
+      <!-- <button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button> -->
+      <button class="btn-export" onclick="exportExcel()">⬇ Export Excel</button>
+    </div>
+  </div>
+
+  <!-- Responses list -->
+  <div class="responses-wrap" id="responses-list">
+    <div class="state-msg" id="dash-state">Enter an Event ID and click Load.</div>
+  </div>
+
+  <!-- Load more (pagination) -->
+  <button id="load-more-btn" onclick="loadNextPage()">Load more</button>
+
+
+
+  <!-- Firebase Compat SDK — no type="module" needed -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <!-- SheetJS — real .xlsx export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+/* Firebase Config — replace with your real values */
+const firebaseConfig = {
+  apiKey: "AIzaSyDlLSsLTWMGJZMCktTuCmnT9W5PWobZVVA",
+  authDomain: "digital-invitations-c63dc.firebaseapp.com",
+  projectId: "digital-invitations-c63dc",
+  storageBucket: "digital-invitations-c63dc.firebasestorage.app",
+  messagingSenderId: "823339122434",
+  appId: "1:823339122434:web:4757dde339cd2b61c78c1b",
+  measurementId: "G-VRCX5K5GD6"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* State */
+const PAGE_SIZE      = 20;
+let currentEventId   = 'default-event';
+let lastVisible      = null;
+let cachedResponses  = [];
+let unsubscribe      = null;
+let unsubscribeStats = null;
+
+/* Load Event */
+function loadEvent() {
+  const inputVal = document.getElementById('event-input').value.trim();
+  if (!inputVal) return;
+
+  if (unsubscribe)      { unsubscribe();      unsubscribe      = null; }
+  if (unsubscribeStats) { unsubscribeStats(); unsubscribeStats = null; }
+
+  currentEventId  = inputVal;
+  lastVisible     = null;
+  cachedResponses = [];
+
+  document.getElementById('responses-list').innerHTML = '<div class="state-msg">Loading...</div>';
+  document.getElementById('load-more-btn').style.display = 'none';
+
+  startListener();
+  listenToStats(currentEventId);
+}
+
+/* Real-time responses listener */
+function startListener() {
+  const ref = db.collection('events').doc(currentEventId)
+    .collection('responses').orderBy('timestamp','desc').limit(PAGE_SIZE);
+
+  unsubscribe = ref.onSnapshot(snapshot => {
+    if (snapshot.empty) {
+      document.getElementById('responses-list').innerHTML = '<div class="state-msg">No responses yet.</div>';
+      return;
+    }
+    lastVisible = snapshot.docs[snapshot.docs.length - 1];
+    document.getElementById('load-more-btn').style.display =
+      snapshot.docs.length === PAGE_SIZE ? 'block' : 'none';
+
+    const responses = snapshot.docs.map(doc => ({
+      id: doc.id, ...doc.data(),
+      timestamp: doc.data().timestamp?.toDate()
+    }));
+    cachedResponses = responses;
+    renderResponses(responses, false);
+  }, err => {
+    document.getElementById('responses-list').innerHTML = `<div class="state-msg">Error: ${err.message}</div>`;
+  });
+}
+
+/* Stats listener — reads summary doc */
+function listenToStats(eventId) {
+  const statsRef = db.collection('events').doc(eventId).collection('stats').doc('summary');
+  unsubscribeStats = statsRef.onSnapshot(snap => {
+    const d = snap.exists ? snap.data() : {};
+    document.getElementById('stat-total').textContent = d.total     || 0;
+    document.getElementById('stat-yes').textContent   = d.attending || 0;
+    document.getElementById('stat-no').textContent    = d.declining || 0;
+  });
+}
+
+/* Pagination */
+function loadNextPage() {
+  if (!lastVisible) return;
+  db.collection('events').doc(currentEventId).collection('responses')
+    .orderBy('timestamp','desc').startAfter(lastVisible).limit(PAGE_SIZE).get()
+    .then(snapshot => {
+      if (snapshot.empty) { document.getElementById('load-more-btn').style.display = 'none'; return; }
+      lastVisible = snapshot.docs[snapshot.docs.length - 1];
+      document.getElementById('load-more-btn').style.display =
+        snapshot.docs.length === PAGE_SIZE ? 'block' : 'none';
+      const newR = snapshot.docs.map(doc => ({ id:doc.id,...doc.data(), timestamp:doc.data().timestamp?.toDate() }));
+      cachedResponses = [...cachedResponses, ...newR];
+      renderResponses(newR, true);
+    });
+}
+
+/* Render cards */
+function renderResponses(responses, append) {
+  const list = document.getElementById('responses-list');
+  if (!append) list.innerHTML = '';
+  responses.forEach(r => {
+    const badgeClass = r.attending==='yes' ? 'badge-yes' : r.attending==='no' ? 'badge-no' : 'badge-na';
+    const badgeText  = r.attending==='yes' ? 'Attending ✓' : r.attending==='no' ? 'Not Attending ✗' : 'No Answer';
+    const timeStr    = r.timestamp ? r.timestamp.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+    const sigHtml    = r.signature ? `<div class="response-sig"><img src="${r.signature}" alt="Signature"/></div>` : '';
+    const msgHtml    = r.message   ? `<div class="response-message">"${escHtml(r.message)}"</div>` : '';
+    const card = document.createElement('div');
+    card.className = 'response-card';
+    card.innerHTML = `
+      <div class="response-name">${escHtml(r.name)}</div>
+      <span class="response-badge ${badgeClass}">${badgeText}</span>
+      ${msgHtml}${sigHtml}
+      <div class="response-time">${timeStr}</div>`;
+    list.appendChild(card);
+  });
+}
+
+/* Export CSV */
+// function exportCSV() {
+//   if (!cachedResponses.length) { alert('No responses loaded. Click Load first.'); return; }
+//   const headers = ['Name','Attending','Message','Has Signature','Timestamp'];
+//   const rows    = cachedResponses.map(r => [
+//     csvCell(r.name), csvCell(r.attending), csvCell(r.message||''),
+//     csvCell(r.signature?'Yes':'No'), csvCell(r.timestamp?r.timestamp.toISOString():'')
+//   ]);
+//   const csv = [headers,...rows].map(row=>row.join(',')).join('\n');
+//   const link = document.createElement('a');
+//   link.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+//   link.download = `rsvp-${currentEventId}.csv`;
+//   link.click();
+// }
+
+/* Export XLSX — SheetJS real .xlsx */
+function exportExcel() {
+  if (!cachedResponses.length) { alert('No responses loaded. Click Load first.'); return; }
+  const rows = cachedResponses.map(r => ({
+    'Name'         : r.name       || '',
+    'Attending'    : r.attending  || '',
+    'Message'      : r.message    || '',
+    'Has Signature': r.signature  ? 'Yes' : 'No',
+    'Language'     : r.lang       || '',
+    'Timestamp'    : r.timestamp  ? r.timestamp.toISOString() : ''
+  }));
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [{wch:25},{wch:15},{wch:40},{wch:15},{wch:10},{wch:25}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'RSVP Responses');
+  XLSX.writeFile(wb, `rsvp-${currentEventId}.xlsx`);
+}
+
+/* Helpers */
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function csvCell(val) { return `"${String(val??'').replace(/"/g,'""')}"`; }
+
+/* Auto-load from URL ?event=xxx */
+const urlEvent = new URLSearchParams(window.location.search).get('event');
+if (urlEvent) { document.getElementById('event-input').value = urlEvent; loadEvent(); }
+
+</script>
+</body>
+</html>
