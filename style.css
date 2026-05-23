@@ -1,0 +1,845 @@
+/* ================================================================
+   style.css — Wedding Digital Invitation
+   Project : Omar & Salma
+   Stack   : HTML + CSS + Vanilla JS (no frameworks)
+   Author  : [Your Name / Brand]
+================================================================ */
+
+
+/* ────────────────────────────────────────────────────────────────
+   1. CSS CUSTOM PROPERTIES (Design Tokens)
+   Central place to change the whole color palette.
+──────────────────────────────────────────────────────────────── */
+:root {
+  --beige:      #F5F0E8;   /* page background */
+  --warm-white: #FDFBF7;   /* card / section backgrounds */
+  --gold:       #C9A96E;   /* accents, ornaments */
+  --gold-dark:  #A07840;   /* hover states, required marks */
+  --olive:      #5C5240;   /* headings, footer, primary button */
+  --brown:      #8B7355;   /* unused — available for extras */
+  --text:       #3A3028;   /* main body text */
+  --text-light: #7A6E64;   /* subtitles, labels, descriptions */
+  --border:     #E0D8CC;   /* all borders and dividers */
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   2. RESET & BASE
+──────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* smooth anchor scrolling */
+}
+
+body {
+  background: var(--beige);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Arabic mode — switch body font to Tajawal */
+body[dir="rtl"] {
+  font-family: 'Tajawal', sans-serif;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   3. ENVELOPE SCREEN
+   Full-screen olive overlay shown on load.
+   .hidden class added by JS after tap → fades out.
+──────────────────────────────────────────────────────────────── */
+#envelope-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--olive);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+#envelope-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.05); /* subtle zoom-out as it disappears */
+}
+
+/* Envelope floats up and down continuously */
+.envelope-wrap {
+  position: relative;
+  width: min(320px, 85vw);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+/* The envelope card itself */
+.envelope-body {
+  width: 100%;
+  aspect-ratio: 1.6 / 1;
+  background: var(--beige);
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+/* Top flap — rotates open on tap */
+.env-flap {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 52%;
+  background: #EDE5D8;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+}
+
+/* Flap opens when .open class is added by JS */
+.envelope-wrap.open .env-flap {
+  transform: rotateX(-160deg);
+}
+
+/* Bottom V-shape */
+.env-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 55%;
+  background: #E8DFD0;
+  clip-path: polygon(0 100%, 100% 100%, 100% 20%, 50% 0, 0 20%);
+}
+
+/* Left and right side triangles */
+.env-left {
+  position: absolute;
+  top: 0; left: 0;
+  width: 52%; height: 100%;
+  background: #EDE5D8;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.env-right {
+  position: absolute;
+  top: 0; right: 0;
+  width: 52%; height: 100%;
+  background: #E0D6C6;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+/* Gold circular wax seal */
+.env-seal {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px; height: 48px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Great Vibes', cursive;
+  color: #fff;
+  font-size: 22px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+/* Names text above tap hint */
+.env-names {
+  margin-top: 16px;
+  font-family: 'Great Vibes', cursive;
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+}
+
+/* Pulsing "Tap to open" hint */
+.env-tap {
+  margin-top: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   4. LANGUAGE TOGGLE BUTTON
+   Single pill button — fixed position top corner.
+   Shows the OTHER language as its label (EN shows "عربي").
+   RTL: flips from right to left.
+──────────────────────────────────────────────────────────────── */
+#lang-btn {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--olive);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+#lang-btn:hover {
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Move button to left side in RTL mode */
+body[dir="rtl"] #lang-btn {
+  right: auto;
+  left: 16px;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   5. HERO SECTION
+──────────────────────────────────────────────────────────────── */
+#hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  overflow: hidden;
+}
+
+/* Background image with dark gradient overlay */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(60, 48, 36, 0.55) 0%,
+      rgba(60, 48, 36, 0.30) 50%,
+      rgba(60, 48, 36, 0.65) 100%
+    ),
+    url('https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80')
+    center / cover no-repeat;
+}
+
+/* Content sits above the background */
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-subtitle {
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 20px;
+}
+
+/* Couple names in script font */
+.hero-name {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(64px, 18vw, 96px);
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* "&" between the names */
+.hero-amp {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(20px, 5vw, 28px);
+  color: var(--gold);
+  margin: 8px 0;
+  letter-spacing: 0.1em;
+}
+
+.hero-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 20px;
+  letter-spacing: 0.1em;
+}
+
+/* Ghost pill CTA button */
+.hero-cta {
+  margin-top: 36px;
+  display: inline-block;
+  padding: 10px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.hero-cta:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Animated scroll indicator at bottom of hero */
+.scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.6;
+}
+
+.scroll-hint span {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: scrollLine 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  51%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+.scroll-hint p {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   6. SHARED SECTION STYLES
+──────────────────────────────────────────────────────────────── */
+section {
+  padding: 72px 24px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Script-font section title */
+.section-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(36px, 9vw, 52px);
+  color: var(--olive);
+  text-align: center;
+}
+
+/* Small uppercase subtitle under section title */
+.section-sub {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-top: 6px;
+  margin-bottom: 40px;
+}
+
+/* Decorative ✦ ✦ ✦ divider */
+.ornament {
+  text-align: center;
+  color: var(--gold);
+  font-size: 18px;
+  letter-spacing: 0.4em;
+  margin: 8px 0 32px;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   7. COUNTDOWN SECTION
+   Single flex row with 4 items.
+   No icons, no separators — clean minimal look.
+──────────────────────────────────────────────────────────────── */
+#countdown {
+  background: var(--warm-white);
+  max-width: 100%;
+  padding: 72px 24px;
+}
+
+.countdown-inner {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Flex row — forces all 4 units on one horizontal line */
+.countdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: 0;
+}
+
+/* Each unit: number stacked above label */
+.cd-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Large number */
+.cd-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 11vw, 60px);
+  font-weight: 300;
+  color: var(--olive);
+  line-height: 1;
+}
+
+/* Small label below number */
+.cd-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   8. DAY PROGRAMME SECTION
+──────────────────────────────────────────────────────────────── */
+.programme-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each programme row: time + content */
+.prog-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 25px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  
+}
+
+.prog-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+/* Time stamp */
+.prog-time {
+  width: 80px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  color: var(--gold-dark);
+  padding-top: 2px;
+  font-weight: 500;
+}
+
+.prog-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.prog-desc {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 3px;
+  line-height: 1.6;
+}
+
+/* RTL: reverse grid direction for programme rows */
+body[dir="rtl"] .prog-item {
+  direction: rtl;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   9. DAY DETAILS SECTION
+──────────────────────────────────────────────────────────────── */
+#details {
+  background: var(--warm-white);
+  max-width: 100%;
+  padding: 72px 24px;
+}
+
+.details-inner {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.venue-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+  text-align: center;
+  color: var(--olive);
+}
+
+.venue-time {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 6px;
+  letter-spacing: 0.1em;
+}
+
+/* Map embed box */
+.map-box {
+  margin-top: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  aspect-ratio: 16 / 9;
+  background: #e8e4dc;
+  position: relative;
+}
+
+.map-box iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Shown when real iframe is not yet added */
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text-light);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+/* Row of outline action buttons */
+.details-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-outline {
+  flex: 1;
+  padding: 10px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--olive);
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  transition: background 0.2s;
+}
+
+.btn-outline:hover {
+  background: var(--beige);
+}
+
+/* Adults-only notice */
+.note-box {
+  margin-top: 28px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.note-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.note-text {
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+body[dir="rtl"] .note-text {
+  text-align: right;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   10. RSVP FORM SECTION
+──────────────────────────────────────────────────────────────── */
+#rsvp-section {
+  padding: 72px 24px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Card container */
+.rsvp-card {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 28px;
+}
+
+/* Form field wrapper */
+.field-group {
+  margin-bottom: 20px;
+}
+
+/* Field label */
+.field-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+.field-label .req {
+  color: var(--gold-dark); /* red-ish asterisk for required */
+}
+
+/* Text input and textarea */
+.field-input,
+.field-textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--beige);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+
+.field-input:focus,
+.field-textarea:focus {
+  border-color: var(--gold);
+}
+
+.field-textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+/* Arabic inputs */
+body[dir="rtl"] .field-input,
+body[dir="rtl"] .field-textarea {
+  font-family: 'Tajawal', sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Yes / No toggle buttons */
+.attend-group {
+  display: flex;
+  gap: 10px;
+}
+
+.attend-btn {
+  flex: 1;
+  padding: 11px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+body[dir="rtl"] .attend-btn {
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* Selected states */
+.attend-btn.sel-yes {
+  background: #eaf2e6;
+  border-color: #7a9e6e;
+  color: #3a5e2e;
+}
+
+.attend-btn.sel-no {
+  background: #f5e8e8;
+  border-color: #c07070;
+  color: #7a3030;
+}
+
+.attend-btn:not(.sel-yes):not(.sel-no):hover {
+  background: var(--beige);
+}
+
+/* Signature drawing canvas */
+.sig-canvas {
+  width: 100%;
+  height: 110px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--beige);
+  cursor: crosshair;
+  touch-action: none; /* prevents page scroll while drawing */
+  display: block;
+}
+
+/* "Clear signature" link-style button */
+.sig-clear {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--text-light);
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 5px;
+  text-transform: uppercase;
+  text-decoration: underline;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Primary solid submit button */
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: var(--olive);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 8px;
+  transition: background 0.2s;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: var(--gold-dark);
+}
+
+body[dir="rtl"] .btn-primary {
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* Success message — hidden by default, shown by JS after submit */
+#rsvp-success {
+  display: none;
+  text-align: center;
+  padding: 20px 0;
+}
+
+#rsvp-success .success-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+#rsvp-success h3 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 38px;
+  color: var(--olive);
+  margin-bottom: 10px;
+}
+
+#rsvp-success p {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   11. FOOTER
+──────────────────────────────────────────────────────────────── */
+footer {
+  background: var(--olive);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding: 52px 24px;
+}
+
+.footer-names {
+  font-family: 'Great Vibes', cursive;
+  font-size: 38px;
+  color: #fff;
+}
+
+.footer-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  margin-top: 8px;
+}
+
+.footer-made {
+  font-size: 10px;
+  margin-top: 20px;
+  opacity: 0.4;
+  letter-spacing: 0.1em;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   12. SCROLL REVEAL ANIMATION
+   Elements start invisible + shifted down.
+   JS adds .visible via IntersectionObserver when in viewport.
+──────────────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}

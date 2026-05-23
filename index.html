@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ahmed & Esraa — Wedding Invitation</title>
+
+  <!-- ═══════════════════════════════════════════════
+       GOOGLE FONTS (free, loaded from CDN)
+       - Great Vibes        → script headings (names)
+       - Cormorant Garamond → elegant serif (dates, times)
+       - Montserrat         → clean sans (labels, buttons)
+       - Tajawal            → Arabic body font
+  ════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500&family=Tajawal:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Project stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════
+       1. ENVELOPE SCREEN
+       Full-screen overlay on first load.
+       Tap anywhere → flap animation → fades out.
+  ═══════════════════════════════════════════════ -->
+  <div id="envelope-screen">
+
+    <div class="envelope-wrap" id="env-wrap">
+      <div class="envelope-body">
+        <div class="env-left"></div>
+        <div class="env-right"></div>
+        <div class="env-bottom"></div>
+        <div class="env-flap"></div>
+        <!-- Gold wax seal with bride's initial -->
+        <div class="env-seal">A</div>
+      </div>
+    </div>
+
+    <div class="env-names">Ahmed &amp; Esraa</div>
+    <!-- Pulsing tap-to-open hint — text swapped by JS on lang toggle -->
+    <p class="env-tap" id="env-tap-text">Tap to open</p>
+
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       2. LANGUAGE TOGGLE BUTTON
+       Single button — shows the OTHER language as label.
+       Fixed position, flips side in RTL mode.
+  ═══════════════════════════════════════════════ -->
+  <button id="lang-btn" onclick="toggleLang()">عربي</button>
+
+
+  <!-- ══════════════════════════════════════════════
+       3. HERO SECTION
+       Full-viewport background with names + date + CTA.
+  ═══════════════════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+
+    <div class="hero-content">
+      <p class="hero-subtitle"
+         data-en="WE'RE GETTING MARRIED"
+         data-ar="نتزوج">WE'RE GETTING MARRIED</p>
+
+      <h1 class="hero-name" data-en="Ahmed" data-ar="أحمد">Ahmed</h1>
+      <p class="hero-amp">&amp;</p>
+      <h1 class="hero-name" data-en="Esraa" data-ar="إسراء">Esraa </h1>
+
+      <p class="hero-date"
+         data-en="June 15, 2027"
+         data-ar="١٥ يونيو ٢٠٢٧">June 15, 2027</p>
+
+      <!-- CTA scrolls directly to the inline RSVP form -->
+      <a href="#rsvp-section" class="hero-cta"
+         data-en="Confirm Your Attendance"
+         data-ar="تأكيد الحضور">Confirm Your Attendance</a>
+    </div>
+
+    <!-- Animated scroll indicator -->
+    <div class="scroll-hint">
+      <span></span>
+      <p>scroll</p>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       4. COUNTDOWN SECTION
+       Live JS countdown to wedding date/time.
+       All 4 units displayed in a single horizontal row.
+  ═══════════════════════════════════════════════ -->
+  <div id="countdown">
+    <div class="countdown-inner">
+
+      <h2 class="section-title reveal"
+          data-en="Countdown"
+          data-ar="العد التنازلي">Countdown</h2>
+      <p class="section-sub reveal"
+         data-en="To the big day"
+         data-ar="حتى اليوم الكبير">To the big day</p>
+
+      <!--
+        countdown-row: flex row, no icons, no separators.
+        Each .cd-item = number on top + label below.
+      -->
+      <div class="countdown-row reveal">
+
+        <div class="cd-item">
+          <span class="cd-num" id="cd-days">--</span>
+          <span class="cd-label" data-en="DAYS" data-ar="أيام">DAYS</span>
+        </div>
+
+        <div class="cd-item">
+          <span class="cd-num" id="cd-hours">--</span>
+          <span class="cd-label" data-en="HOURS" data-ar="ساعات">HOURS</span>
+        </div>
+
+        <div class="cd-item">
+          <span class="cd-num" id="cd-mins">--</span>
+          <span class="cd-label" data-en="MINS" data-ar="دقائق">MINS</span>
+        </div>
+
+        <div class="cd-item">
+          <span class="cd-num" id="cd-secs">--</span>
+          <span class="cd-label" data-en="SECS" data-ar="ثواني">SECS</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       5. DAY PROGRAMME SECTION
+       Ordered timeline of the wedding day.
+  ═══════════════════════════════════════════════ -->
+  <section id="programme">
+    <h2 class="section-title reveal"
+        data-en="Day Programme"
+        data-ar="برنامج اليوم">Day Programme</h2>
+    <p class="section-sub reveal"
+       data-en="What we have planned for you"
+       data-ar="ما أعددناه لكم">What we have planned for you</p>
+    <div class="ornament reveal">✦ ✦ ✦</div>
+
+    <div class="programme-list">
+
+      <div class="prog-item reveal">
+        <div class="prog-time">6:00 pm</div>
+        <div>
+          <div class="prog-title" data-en="Guest Arrival" data-ar="وصول الضيوف">Guest Arrival</div>
+          <div class="prog-desc"
+               data-en="Guests are welcomed to begin the evening."
+               data-ar="يسعدنا استقبالكم لبداية هذه الأمسية المميزة   .">
+            Guests are welcomed to begin the evening.</div>
+        </div>
+      </div>
+
+      <div class="prog-item reveal">
+        <div class="prog-time">6:30 pm</div>
+        <div>
+          <div class="prog-title" data-en="The Ceremony Begins" data-ar="بداية مراسم الزفاف">The Ceremony Begins</div>
+          <div class="prog-desc"
+               data-en="Join us as we exchange our vows."
+               data-ar="شاركونا لحظة تبادل العهود والاحتفال بحبنا  .">
+            Join us as we exchange our vows.</div>
+        </div>
+      </div>
+
+        <div class="prog-item reveal">
+        <div class="prog-time">7:00 pm</div>
+        <div>
+          <div class="prog-title" data-en="First Dance" data-ar="أول رقصة">First Dance</div>
+          <div class="prog-desc"
+               data-en="The couple shares their first dance together."
+               data-ar="أول رقصة للعروسين معاً.">
+            The couple shares their first dance together.</div>
+        </div>
+      </div>
+
+      <div class="prog-item reveal">
+        <div class="prog-time">9:00 pm</div>
+        <div>
+          <div class="prog-title" data-en="Dinner &amp; Celebration" data-ar="العشاء والاحتفال">Dinner &amp; Celebration</div>
+          <div class="prog-desc"
+               data-en="A delightful dinner will be served."
+               data-ar="استمتعوا بعشاء مميز وأجواء دافئة.">
+            A delightful dinner will be served.</div>
+        </div>
+      </div>
+
+       <div class="prog-item reveal">
+        <div class="prog-time">10:00 pm</div>
+        <div>
+          <div class="prog-title" data-en="Cake Cutting" data-ar="تقطيع الكعكة">Cake Cutting</div>
+          <div class="prog-desc"
+               data-en="Celebrate this sweet moment with us."
+               data-ar=" شاركونا هذه اللحظة الجميلة .">
+            Celebrate this sweet moment with us.</div>
+        </div>
+      </div>
+
+      <div class="prog-item reveal">
+        <div class="prog-time">01:00 am</div>
+        <div>
+          <div class="prog-title" data-en="End of the Evening" data-ar="وداع الضيوف">End of the Evening</div>
+          <div class="prog-desc"
+               data-en="Thank you for sharing our special day."
+               data-ar="شكراً لمشاركتكم يومنا المميز.">
+            Thank you for sharing our special day.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       6. DAY DETAILS SECTION
+       Venue + time + Google Maps embed + action buttons.
+
+       TO ADD YOUR REAL MAP:
+         1. Go to maps.google.com → find the venue
+         2. Share → Embed a map → Copy the <iframe>
+         3. Remove the .map-placeholder div
+         4. Paste the <iframe> inside .map-box
+  ═══════════════════════════════════════════════ -->
+  <div id="details">
+    <div class="details-inner">
+
+      <h2 class="section-title reveal"
+          data-en="Day Details"
+          data-ar="تفاصيل اليوم">Day Details</h2>
+      <p class="section-sub reveal"
+         data-en="Everything you need to know"
+         data-ar="كل ما تحتاج معرفته">Everything you need to know</p>
+      <div class="ornament reveal">✦ ✦ ✦</div>
+
+      <p class="venue-name reveal">The Gabriel Hotel , Cairo</p>
+      <p class="venue-time reveal"
+         data-en="⏱ From 6:00 PM to 1:00 AM"
+         data-ar="⏱ من ٦:٠٠ مساءً حتى ١:٠٠ فجراً">⏱ From 6:00 PM to 1:00 AM</p>
+
+      <div class="map-box reveal">
+        <!-- REPLACE THIS with your real Google Maps <iframe> -->
+        <div class="map-placeholder">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3451.6826102890736!2d31.383714275555967!3d30.10327497489398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14581645d95e220f%3A0x3867bf8ced8bf276!2sThe%20Gabriel%20Hotel!5e0!3m2!1sen!2seg!4v1778618259903!5m2!1sen!2seg" width="600" height="450" style="border:10px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <!-- <span style="font-size:32px">🗺️</span>
+          <span data-en="Map Loading..." data-ar="جاري تحميل الخريطة...">Map Loading...</span> -->
+        </div>
+      </div>
+
+      <div class="details-btns reveal">
+        <a  href="https://www.google.com/maps/place/The+Gabriel+Hotel/@30.1032796,31.3837143,17z/data=!3m1!4b1!4m9!3m8!1s0x14581645d95e220f:0x3867bf8ced8bf276!5m2!4m1!1i2!8m2!3d30.103275!4d31.3862892!16s%2Fg%2F12hm23w0k?entry=ttu&g_ep=EgoyMDI2MDUxMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-outline"
+           data-en="📍 Open in Maps"
+           data-ar="📍 افتح في الخرائط">📍 Open in Maps</a>
+
+        <!-- JS generates a .ics calendar file on click — no backend needed -->
+        <a href="#" id="add-cal-btn" class="btn-outline"
+           data-en="📅 Add to Calendar"
+           data-ar="📅 أضف للتقويم">📅 Add to Calendar</a>
+      </div>
+
+      <div class="note-box reveal">
+        <span class="note-icon">🔞</span>
+        <p class="note-text"
+           data-en="Adults-only celebration. Thank you for celebrating with us."
+           data-ar="حفل للبالغين فقط. شكراً لاحتفالكم معنا.">
+           Adults-only celebration. Thank you for celebrating with us.</p>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       7. RSVP FORM SECTION  (inline — same page)
+       Free solution: Formspree.io
+         - Sign up free at formspree.io
+         - Create a form → get your endpoint URL
+         - Replace "YOUR_FORMSPREE_ID" below with your ID
+         - Responses arrive in your email inbox
+         - 50 free submissions/month (enough for a wedding)
+
+       Fields: name · attend toggle · message · signature canvas
+       On submit → hides form, shows success message.
+  ═══════════════════════════════════════════════ -->
+  <section id="rsvp-section">
+    <div class="rsvp-card reveal">
+
+      <!-- FORM STATE (visible by default) -->
+      <div id="rsvp-form-content">
+
+        <h2 class="section-title"
+            data-en="Kindly confirm your attendance"
+            data-ar="برجاء تأكيد حضوركم ">Kindly confirm your attendance</h2>
+        <p class="section-sub"
+           data-en="Your presence means the world to us"
+           data-ar="وجودكم يعني لنا الكثير ">Your presence means the world to us</p>
+        <div class="ornament" style="margin-bottom:28px">✦ ✦ ✦</div>
+
+        <!-- Field: Full name (required) -->
+        <div class="field-group">
+          <label class="field-label"
+                 data-en="Full Name *"
+                 data-ar="الاسم الكامل *">Full Name <span class="req">*</span></label>
+          <input type="text" id="rsvp-name" class="field-input"
+                 placeholder="Your name"
+                 data-placeholder-en="Your name"
+                 data-placeholder-ar="اسمك الكريم" />
+        </div>
+
+        <!-- Field: Will you attend? (toggle buttons) -->
+        <div class="field-group">
+          <label class="field-label"
+                 data-en="Will you attend?"
+                 data-ar="هل ستحضر؟">Will you attend?</label>
+          <div class="attend-group">
+            <button class="attend-btn" id="btn-yes" onclick="selectAttend('yes')"
+                    data-en="Yes, with pleasure 🎉"
+                    data-ar="نعم، بكل سرور! 🎉">Yes, with pleasure 🎉</button>
+            <button class="attend-btn" id="btn-no" onclick="selectAttend('no')"
+                    data-en="Sorry, I won’t be able to attend 😔"
+                    data-ar="للأسف لن أتمكن من الحضور 😔">Sorry, I won’t be able to attend 😔</button>
+          </div>
+        </div>
+
+        <!-- Field: Message for the couple -->
+        <div class="field-group">
+          <label class="field-label"
+                 data-en="Message for the couple"
+                 data-ar="رسالة للعروسين">Message for the couple</label>
+          <textarea id="rsvp-msg" class="field-textarea"
+                    placeholder="Write a warm message..."
+                    data-placeholder-en="Write a warm message..."
+                    data-placeholder-ar="اكتب رسالة جميلة..."></textarea>
+        </div>
+
+        <!-- Field: Signature (HTML5 canvas, draw with finger/mouse) -->
+        <div class="field-group">
+          <label class="field-label"
+                 data-en="Signature"
+                 data-ar="توقيعك">Signature</label>
+          <canvas class="sig-canvas" id="sig-canvas"></canvas>
+          <button class="sig-clear" onclick="clearSig()"
+                  data-en="Clear signature"
+                  data-ar="مسح التوقيع">Clear signature</button>
+        </div>
+
+        <!-- Submit -->
+        <button class="btn-primary" onclick="submitRSVP()"
+                data-en="SEND CONFIRMATION"
+                data-ar="إرسال التأكيد">SEND CONFIRMATION</button>
+
+      </div>
+      <!-- END FORM STATE -->
+
+      <!-- SUCCESS STATE (hidden, shown after submit) -->
+      <div id="rsvp-success">
+        <div class="success-icon">💌</div>
+        <h3 data-en="Thank you!" data-ar="شكراً لك!">Thank you!</h3>
+        <p data-en="Your response has been recorded. We can't wait to celebrate with you on our special day!"
+           data-ar="تم تسجيل ردك. لا يسعنا الانتظار للاحتفال معك في يومنا المميز!">
+           Your response has been recorded. We can't wait to celebrate with you on our special day!</p>
+      </div>
+      <!-- END SUCCESS STATE -->
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       8. FOOTER
+  ═══════════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-names" data-en="Ahmed &amp; Esra"
+       data-ar="أحمد &amp; إسراء">Ahmed &amp; Esraa</p>
+      </div>
+      
+    <p class="footer-date"
+       data-en="June 15, 2027"
+       data-ar="١٥ يونيو ٢٠٢٧">June 15, 2027</p>
+    <p class="footer-made"
+       data-en="Made with love · Momenta"
+       data-ar="صُنع بكل حب · مومينتا">Made with love · Momenta</p>
+  </footer>
+
+  <!-- script-ui.js: envelope + lang + countdown + reveal + signature -->
+  <script src="script-ui.js"></script>
+  <!-- Firebase Compat SDK — no type="module", no CSP issues -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase submit logic -->
+
+  <!-- ═══════════════════════════════════════════════════════
+       EVENT CONFIGURATION
+       🔧 Change this for every new couple.
+       URL stays clean: yoursite.com/omar-salma
+       Firebase uses the secret ID below internally.
+  ════════════════════════════════════════════════════════ -->
+  <script>
+    window.EVENT_ID = 'ahmed-esraa-iq7siw'; // 🔧 replace with generated ID
+  </script>
+  <script src="script.js"></script>
+
+</body>
+</html>
