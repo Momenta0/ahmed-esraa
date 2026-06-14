@@ -76,7 +76,7 @@ window.toggleLang = toggleLang;
    🔧 Change the date string to the real wedding date.
       Format: 'YYYY-MM-DDTHH:MM:SS'
 ──────────────────────────────────────────────────────────────── */
-const weddingDate = new Date('2027-06-15T18:00:00');
+const weddingDate = new Date('2027-07-15T18:00:00');
 
 function toArabicNumerals(str) {
   return str.replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
@@ -142,8 +142,8 @@ if (calBtn) {
       'VERSION:2.0',
       'PRODID:-//Wedding Invitation//EN',
       'BEGIN:VEVENT',
-      'DTSTART:20270615T180000',
-      'DTEND:20270616T020000',
+      'DTSTART:20270715T180000',
+      'DTEND:20270716T020000',
       'SUMMARY:Ahmed & Esraa Wedding',
       'LOCATION:JW Marriott Hotel,Cairo',
       'DESCRIPTION:You are invited to celebrate the wedding of Ahmed & Esraa.',

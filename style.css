@@ -1,6 +1,6 @@
 /* ================================================================
    style.css — Wedding Digital Invitation
-   Project : Omar & Salma
+   Project : Ahmed & Esraa
    Stack   : HTML + CSS + Vanilla JS (no frameworks)
    Author  : [Your Name / Brand]
 ================================================================ */
@@ -284,7 +284,7 @@ body[dir="rtl"] #lang-btn {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: clamp(20px, 5vw, 28px);
-  color: var(--gold);
+  color: #fff;
   margin: 8px 0;
   letter-spacing: 0.1em;
 }
