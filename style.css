@@ -250,7 +250,9 @@ body[dir="rtl"] #lang-btn {
       rgba(60, 48, 36, 0.30) 50%,
       rgba(60, 48, 36, 0.65) 100%
     ),
-    url('https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80')
+    url('https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')
+
+
     center / cover no-repeat;
 }
 
@@ -826,6 +828,13 @@ footer {
   opacity: 0.4;
   letter-spacing: 0.1em;
 }
+.footer-momenta-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.2s;
+}
+.footer-momenta-link:hover { opacity: 0.7; }
 
 
 /* ────────────────────────────────────────────────────────────────
