@@ -48,8 +48,7 @@ const eventId = window.EVENT_ID || 'default-event'; // 🔧 set in index.html
 /* ────────────────────────────────────────────────────────────────
    3. SIGNATURE COMPRESSION
    Resize canvas to 400×150 and export as WebP quality 0.4
-   Result: ~8–20KB instead of 80–200KB PNG
-   Stored as base64 string directly in Firestore doc
+   Result: ~8–20KB — stored as base64 string in Firestore doc
 ──────────────────────────────────────────────────────────────── */
 function compressSignature(sourceCanvas) {
   const offscreen  = document.createElement('canvas');

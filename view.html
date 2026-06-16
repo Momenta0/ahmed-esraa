@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard — Ahmed & Esraa</title>
+  <title>Your Invitation Dashboard</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     :root {
@@ -32,7 +32,6 @@
       font-weight: 300;
       color: var(--text);
       min-height: 100vh;
-      padding: 32px 20px 60px;
     }
 
     /* ── Login Screen ── */
@@ -41,40 +40,37 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      margin: -32px -20px;
+      padding: 20px;
     }
 
     .login-card {
       background: var(--warm-white);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px 36px;
+      border-radius: 20px;
+      padding: 48px 40px;
       width: 100%;
       max-width: 380px;
       text-align: center;
     }
 
-    .login-card h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 26px;
-      font-weight: 500;
-      color: var(--olive);
+    .login-script {
+      font-family: 'Great Vibes', cursive;
+      font-size: 42px;
+      color: var(--gold);
       margin-bottom: 4px;
     }
 
-    .login-card p {
-      font-size: 11px;
-      letter-spacing: 0.18em;
+    .login-card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--text-light);
-      margin-bottom: 32px;
+      margin-bottom: 36px;
     }
 
-    .login-field {
-      text-align: left;
-      margin-bottom: 16px;
-    }
-
+    .login-field { text-align: left; margin-bottom: 16px; }
     .login-field label {
       display: block;
       font-size: 10px;
@@ -83,10 +79,9 @@
       color: var(--text-light);
       margin-bottom: 6px;
     }
-
     .login-field input {
       width: 100%;
-      padding: 11px 14px;
+      padding: 12px 14px;
       border: 1px solid var(--border);
       border-radius: 8px;
       background: var(--beige);
@@ -96,12 +91,11 @@
       outline: none;
       transition: border-color 0.2s;
     }
-
     .login-field input:focus { border-color: var(--gold); }
 
     .login-btn {
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       margin-top: 8px;
       background: var(--olive);
       color: #fff;
@@ -109,13 +103,12 @@
       border-radius: 8px;
       font-family: 'Montserrat', sans-serif;
       font-size: 11px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       cursor: pointer;
       transition: background 0.2s;
     }
-
-    .login-btn:hover { background: var(--gold); }
+    .login-btn:hover   { background: var(--gold); }
     .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .login-error {
@@ -125,33 +118,34 @@
       min-height: 18px;
     }
 
-    /* ── Dashboard (hidden until logged in) ── */
-    #dashboard { display: none; }
+    /* ── Dashboard ── */
+    #dashboard {
+      display: none;
+      padding: 40px 20px 80px;
+    }
 
-    /* ── Header ── */
     .dash-header {
       text-align: center;
-      margin-bottom: 36px;
+      margin-bottom: 40px;
       position: relative;
     }
-    .dash-header h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 500;
-      color: var(--olive);
+    .dash-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: 48px;
+      color: var(--gold);
+      line-height: 1.1;
     }
-    .dash-header p {
-      font-size: 11px;
-      letter-spacing: 0.2em;
+    .dash-subtitle {
+      font-size: 10px;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--text-light);
-      margin-top: 4px;
+      margin-top: 6px;
     }
-
     .logout-btn {
       position: absolute;
       right: 0;
-      top: 4px;
+      top: 8px;
       padding: 7px 16px;
       background: transparent;
       border: 1px solid var(--border);
@@ -166,67 +160,24 @@
     }
     .logout-btn:hover { border-color: var(--red); color: var(--red); }
 
-    /* ── Event selector ── */
-    .event-bar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      max-width: 600px;
-      margin: 0 auto 32px;
-    }
-    .event-bar label {
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-light);
-      white-space: nowrap;
-    }
-    .event-bar input {
-      flex: 1;
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: var(--warm-white);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
-      color: var(--text);
-      outline: none;
-    }
-    .event-bar input:focus { border-color: var(--gold); }
-    .event-bar button {
-      padding: 10px 20px;
-      background: var(--olive);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      cursor: pointer;
-      font-family: 'Montserrat', sans-serif;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
-    .event-bar button:hover { background: var(--gold); }
-
-    /* ── Stats grid ── */
+    /* ── Stats ── */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 14px;
       max-width: 600px;
-      margin: 0 auto 32px;
+      margin: 0 auto 40px;
     }
     .stat-card {
       background: var(--warm-white);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 14px;
+      border-radius: 14px;
+      padding: 24px 14px;
       text-align: center;
     }
     .stat-num {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 44px;
+      font-size: 52px;
       font-weight: 400;
       color: var(--olive);
       line-height: 1;
@@ -236,22 +187,26 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-light);
-      margin-top: 6px;
+      margin-top: 8px;
     }
-    .stat-card.attending  { border-color: #b8d4b0; }
-    .stat-card.attending  .stat-num { color: var(--green); }
-    .stat-card.declining  { border-color: #d4b0b0; }
-    .stat-card.declining  .stat-num { color: var(--red); }
+    .stat-card.attending { border-color: #b8d4b0; }
+    .stat-card.attending .stat-num { color: var(--green); }
+    .stat-card.declining { border-color: #d4b0b0; }
+    .stat-card.declining .stat-num { color: var(--red); }
 
-    /* ── Toolbar ── */
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    /* ── Section title ── */
+    .section-heading {
       max-width: 600px;
-      margin: 0 auto 16px;
-      gap: 12px;
-      flex-wrap: wrap;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-heading h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--olive);
     }
     .live-dot {
       display: inline-flex;
@@ -271,22 +226,7 @@
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-    .btn-export {
-      padding: 8px 16px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: var(--warm-white);
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--olive);
-      cursor: pointer;
-      font-family: 'Montserrat', sans-serif;
-      transition: background 0.2s;
-    }
-    .btn-export:hover { background: var(--beige); }
-
-    /* ── Responses list ── */
+    /* ── Response cards ── */
     .responses-wrap {
       max-width: 600px;
       margin: 0 auto;
@@ -297,8 +237,8 @@
     .response-card {
       background: var(--warm-white);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 20px;
+      border-radius: 14px;
+      padding: 20px 22px;
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 8px 16px;
@@ -306,7 +246,7 @@
     }
     .response-name { font-size: 15px; font-weight: 500; color: var(--text); }
     .response-badge {
-      padding: 3px 10px;
+      padding: 3px 12px;
       border-radius: 20px;
       font-size: 10px;
       letter-spacing: 0.1em;
@@ -316,36 +256,40 @@
     .badge-yes { background: var(--green-bg); color: var(--green); }
     .badge-no  { background: var(--red-bg);   color: var(--red); }
     .badge-na  { background: var(--beige);     color: var(--text-light); }
+
     .response-message {
       grid-column: 1 / -1;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-light);
-      line-height: 1.6;
+      line-height: 1.7;
       font-style: italic;
+      border-left: 2px solid var(--gold);
+      padding-left: 12px;
+      margin-top: 4px;
     }
-    .response-message:empty { display: none; }
-    .response-sig { grid-column: 1 / -1; }
+    .response-sig { grid-column: 1 / -1; margin-top: 4px; }
     .response-sig img {
-      max-height: 50px;
+      max-height: 55px;
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 6px;
       background: var(--beige);
-      padding: 4px 8px;
+      padding: 6px 10px;
     }
     .response-time {
       grid-column: 1 / -1;
       font-size: 10px;
       color: var(--text-light);
       letter-spacing: 0.05em;
+      margin-top: 2px;
     }
 
     #load-more-btn {
       display: none;
-      margin: 20px auto 0;
-      padding: 12px 28px;
+      margin: 24px auto 0;
+      padding: 12px 32px;
       background: transparent;
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 11px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -363,8 +307,25 @@
       font-size: 13px;
     }
 
-    @media (max-width: 400px) {
+    .btn-export {
+      padding: 7px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--warm-white);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--olive);
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-export:hover { background: var(--beige); }
+
+    @media (max-width: 440px) {
       .stats-grid { grid-template-columns: 1fr; }
+      .dash-names { font-size: 36px; }
       .logout-btn { position: static; margin-top: 12px; }
     }
   </style>
@@ -376,46 +337,39 @@
   ═══════════════════════════════ -->
   <div id="login-screen">
     <div class="login-card">
-      <h1>Ahmed &amp; Esraa</h1>
-      <p>RSVP Dashboard</p>
+      <div class="login-script">Momenta</div>
+      <h2>Your Invitation Dashboard</h2>
 
       <div class="login-field">
         <label>Email</label>
         <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
       </div>
-
       <div class="login-field">
         <label>Password</label>
         <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
       </div>
 
-      <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In</button>
+      <button class="login-btn" id="login-btn" onclick="doLogin()">View Our Responses</button>
       <div class="login-error" id="login-error"></div>
     </div>
   </div>
 
 
   <!-- ══════════════════════════════
-       DASHBOARD (shown after login)
+       COUPLE DASHBOARD
   ═══════════════════════════════ -->
   <div id="dashboard">
 
     <div class="dash-header">
-      <h1>Ahmed &amp; Esraa — RSVP Dashboard</h1>
-      <p>Real-time responses</p>
+      <div class="dash-names" id="couple-names">— &amp; —</div>
+      <p class="dash-subtitle">Guest Responses</p>
       <button class="logout-btn" onclick="doLogout()">Sign Out</button>
-    </div>
-
-    <div class="event-bar">
-      <label>Event ID</label>
-      <input type="text" id="event-input" placeholder="default-event" value="default-event" />
-      <button onclick="loadEvent()">Load</button>
     </div>
 
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-num" id="stat-total">—</div>
-        <div class="stat-label">Total Guests</div>
+        <div class="stat-label">Total</div>
       </div>
       <div class="stat-card attending">
         <div class="stat-num" id="stat-yes">—</div>
@@ -423,19 +377,20 @@
       </div>
       <div class="stat-card declining">
         <div class="stat-num" id="stat-no">—</div>
-        <div class="stat-label">Not Attending ✗</div>
+        <div class="stat-label">Declining ✗</div>
       </div>
     </div>
 
-    <div class="toolbar">
-      <span class="live-dot">Live</span>
-      <div style="display:flex;gap:8px">
+    <div class="section-heading">
+      <h3>Guest Messages</h3>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="live-dot">Live</span>
         <button class="btn-export" onclick="exportExcel()">⬇ Export Excel</button>
       </div>
     </div>
 
     <div class="responses-wrap" id="responses-list">
-      <div class="state-msg" id="dash-state">Enter an Event ID and click Load.</div>
+      <div class="state-msg">Loading your responses...</div>
     </div>
 
     <button id="load-more-btn" onclick="loadNextPage()">Load more</button>
@@ -456,8 +411,7 @@ const firebaseConfig = {
   projectId: "digital-invitations-c63dc",
   storageBucket: "digital-invitations-c63dc.firebasestorage.app",
   messagingSenderId: "823339122434",
-  appId: "1:823339122434:web:4757dde339cd2b61c78c1b",
-  measurementId: "G-VRCX5K5GD6"
+  appId: "1:823339122434:web:4757dde339cd2b61c78c1b"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -465,11 +419,17 @@ const auth = firebase.auth();
 const db   = firebase.firestore();
 
 /* ── Auth state ── */
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
   if (user) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display    = 'block';
-    loadEvent();
+    // Load user profile to get their eventId
+    const userDoc = await db.collection('users').doc(user.uid).get();
+    if (!userDoc.exists) {
+      await auth.signOut();
+      showError('No event linked to this account. Please contact us.');
+      return;
+    }
+    const { eventId, coupleName } = userDoc.data();
+    showDashboard(eventId, coupleName || '');
   } else {
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('dashboard').style.display    = 'none';
@@ -481,18 +441,17 @@ async function doLogin() {
   const email    = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   const btn      = document.getElementById('login-btn');
-  const errEl    = document.getElementById('login-error');
 
-  errEl.textContent = '';
-  btn.disabled      = true;
-  btn.textContent   = 'Signing in...';
+  clearError();
+  btn.disabled    = true;
+  btn.textContent = 'Signing in...';
 
   try {
     await auth.signInWithEmailAndPassword(email, password);
   } catch (err) {
-    errEl.textContent = friendlyAuthError(err.code);
-    btn.disabled      = false;
-    btn.textContent   = 'Sign In';
+    showError(friendlyError(err.code));
+    btn.disabled    = false;
+    btn.textContent = 'View Our Responses';
   }
 }
 
@@ -503,79 +462,78 @@ async function doLogout() {
   await auth.signOut();
 }
 
-/* Allow Enter key on password field */
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('login-password')
-    .addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-  document.getElementById('login-email')
+function showError(msg)  { document.getElementById('login-error').textContent = msg; }
+function clearError()    { document.getElementById('login-error').textContent = ''; }
+
+/* Enter key support */
+['login-email', 'login-password'].forEach(id => {
+  document.getElementById(id)
     .addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 });
 
-function friendlyAuthError(code) {
+function friendlyError(code) {
   const map = {
-    'auth/user-not-found'    : 'No account found with this email.',
-    'auth/wrong-password'    : 'Incorrect password.',
-    'auth/invalid-email'     : 'Please enter a valid email address.',
-    'auth/too-many-requests' : 'Too many attempts. Please try again later.',
-    'auth/invalid-credential': 'Incorrect email or password.',
+    'auth/invalid-credential' : 'Incorrect email or password.',
+    'auth/user-not-found'     : 'No account found with this email.',
+    'auth/wrong-password'     : 'Incorrect password.',
+    'auth/invalid-email'      : 'Please enter a valid email.',
+    'auth/too-many-requests'  : 'Too many attempts. Please try again later.',
   };
   return map[code] || 'Sign-in failed. Please try again.';
 }
 
-/* ── Dashboard State ── */
-const PAGE_SIZE      = 20;
-let currentEventId   = 'default-event';
+/* ── Dashboard ── */
+const PAGE_SIZE = 20;
+let currentEventId   = null;
 let lastVisible      = null;
 let cachedResponses  = [];
 let unsubscribe      = null;
 let unsubscribeStats = null;
 
-function loadEvent() {
-  const inputVal = document.getElementById('event-input').value.trim();
-  if (!inputVal) return;
+function showDashboard(eventId, coupleName) {
+  currentEventId = eventId;
 
-  if (unsubscribe)      { unsubscribe();      unsubscribe      = null; }
-  if (unsubscribeStats) { unsubscribeStats(); unsubscribeStats = null; }
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display    = 'block';
 
-  currentEventId  = inputVal;
-  lastVisible     = null;
-  cachedResponses = [];
-
-  document.getElementById('responses-list').innerHTML = '<div class="state-msg">Loading...</div>';
-  document.getElementById('load-more-btn').style.display = 'none';
+  if (coupleName) {
+    document.getElementById('couple-names').textContent = coupleName;
+  }
 
   startListener();
-  listenToStats(currentEventId);
+  listenToStats();
 }
 
 function startListener() {
   const ref = db.collection('events').doc(currentEventId)
-    .collection('responses').orderBy('timestamp','desc').limit(PAGE_SIZE);
+    .collection('responses').orderBy('timestamp', 'desc').limit(PAGE_SIZE);
 
   unsubscribe = ref.onSnapshot(snapshot => {
     if (snapshot.empty) {
-      document.getElementById('responses-list').innerHTML = '<div class="state-msg">No responses yet.</div>';
+      document.getElementById('responses-list').innerHTML =
+        '<div class="state-msg">No responses yet — check back soon! 💌</div>';
       return;
     }
     lastVisible = snapshot.docs[snapshot.docs.length - 1];
     document.getElementById('load-more-btn').style.display =
       snapshot.docs.length === PAGE_SIZE ? 'block' : 'none';
 
-    const responses = snapshot.docs.map(doc => ({
+    cachedResponses = snapshot.docs.map(doc => ({
       id: doc.id, ...doc.data(),
       timestamp: doc.data().timestamp?.toDate()
     }));
-    cachedResponses = responses;
-    renderResponses(responses, false);
+    renderResponses(cachedResponses, false);
   }, err => {
     document.getElementById('responses-list').innerHTML =
-      `<div class="state-msg">Error: ${err.message}</div>`;
+      `<div class="state-msg">Error loading responses: ${err.message}</div>`;
   });
 }
 
-function listenToStats(eventId) {
-  const statsRef = db.collection('events').doc(eventId).collection('stats').doc('summary');
-  unsubscribeStats = statsRef.onSnapshot(snap => {
+function listenToStats() {
+  const ref = db.collection('events').doc(currentEventId)
+    .collection('stats').doc('summary');
+
+  unsubscribeStats = ref.onSnapshot(snap => {
     const d = snap.exists ? snap.data() : {};
     document.getElementById('stat-total').textContent = d.total     || 0;
     document.getElementById('stat-yes').textContent   = d.attending || 0;
@@ -586,9 +544,12 @@ function listenToStats(eventId) {
 function loadNextPage() {
   if (!lastVisible) return;
   db.collection('events').doc(currentEventId).collection('responses')
-    .orderBy('timestamp','desc').startAfter(lastVisible).limit(PAGE_SIZE).get()
+    .orderBy('timestamp', 'desc').startAfter(lastVisible).limit(PAGE_SIZE).get()
     .then(snapshot => {
-      if (snapshot.empty) { document.getElementById('load-more-btn').style.display = 'none'; return; }
+      if (snapshot.empty) {
+        document.getElementById('load-more-btn').style.display = 'none';
+        return;
+      }
       lastVisible = snapshot.docs[snapshot.docs.length - 1];
       document.getElementById('load-more-btn').style.display =
         snapshot.docs.length === PAGE_SIZE ? 'block' : 'none';
@@ -604,14 +565,24 @@ function loadNextPage() {
 function renderResponses(responses, append) {
   const list = document.getElementById('responses-list');
   if (!append) list.innerHTML = '';
+
   responses.forEach(r => {
-    const badgeClass = r.attending==='yes' ? 'badge-yes' : r.attending==='no' ? 'badge-no' : 'badge-na';
-    const badgeText  = r.attending==='yes' ? 'Attending ✓' : r.attending==='no' ? 'Not Attending ✗' : 'No Answer';
+    const badgeClass = r.attending === 'yes' ? 'badge-yes'
+                     : r.attending === 'no'  ? 'badge-no' : 'badge-na';
+    const badgeText  = r.attending === 'yes' ? 'Attending ✓'
+                     : r.attending === 'no'  ? 'Not Attending ✗' : 'No Answer';
     const timeStr    = r.timestamp
-      ? r.timestamp.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})
+      ? r.timestamp.toLocaleDateString('en-GB', {
+          day: '2-digit', month: 'short', year: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        })
       : '—';
-    const sigHtml = r.signature ? `<div class="response-sig"><img src="${r.signature}" alt="Signature"/></div>` : '';
-    const msgHtml = r.message   ? `<div class="response-message">"${escHtml(r.message)}"</div>` : '';
+
+    const msgHtml = r.message
+      ? `<div class="response-message">"${escHtml(r.message)}"</div>` : '';
+    const sigHtml = r.signature
+      ? `<div class="response-sig"><img src="${r.signature}" alt="Signature" /></div>` : '';
+
     const card = document.createElement('div');
     card.className = 'response-card';
     card.innerHTML = `
@@ -624,7 +595,7 @@ function renderResponses(responses, append) {
 }
 
 function exportExcel() {
-  if (!cachedResponses.length) { alert('No responses loaded. Click Load first.'); return; }
+  if (!cachedResponses.length) { alert('No responses loaded yet.'); return; }
   const rows = cachedResponses.map(r => ({
     'Name'         : r.name      || '',
     'Attending'    : r.attending || '',
@@ -642,13 +613,9 @@ function exportExcel() {
 
 function escHtml(str) {
   return String(str)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-
-const urlEvent = new URLSearchParams(window.location.search).get('event');
-if (urlEvent) { document.getElementById('event-input').value = urlEvent; }
-
 </script>
 </body>
 </html>
